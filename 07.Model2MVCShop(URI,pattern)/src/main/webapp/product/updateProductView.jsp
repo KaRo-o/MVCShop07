@@ -46,7 +46,7 @@ function fncAddProduct(){
 		return;
 	}
 		
-	document.detailForm.action='/updateProduct';
+	document.detailForm.action='/product/updateProduct';
 	document.detailForm.submit();
 }
 
@@ -55,7 +55,7 @@ function fncAddProduct(){
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post" >
+<form name="detailForm" method="post" action="/product/updateProduct">
 
 <input type="hidden" name="prodNo" value="${product.prodNo}"/>
 

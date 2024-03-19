@@ -44,7 +44,7 @@ function fncGetUserList(currentPage){
 
 	<div style="width: 98%; margin-left: 10px;">
 
-		<form name="detailForm" action="/listProduct?menu=${param.menu }"
+		<form name="detailForm" action="/product/listProduct?menu=${param.menu }"
 			method="post">
 
 			<table width="100%" height="37" border="0" cellpadding="0"
@@ -103,7 +103,7 @@ function fncGetUserList(currentPage){
 									src="/images/ct_btnbg01.gif" width="17" height="23"></td>
 								<td background="/images/ct_btnbg02.gif" class="ct_btn01"
 									style="padding-top: 3px;"><a
-									href="javascript:fncGetProductList(1);">검색</a></td>
+									href="javascript:fncGetUserList(1);">검색</a></td>
 								<td width="14" height="23"><img
 									src="/images/ct_btnbg03.gif" width="14" height="23"></td>
 							</tr>
@@ -159,13 +159,13 @@ function fncGetUserList(currentPage){
 					
 					
 					<c:if test="${param.menu eq 'search' }">
-					<a href="${getProduct}">${list.prodName}</a>
+					<a href="/product${getProduct}">${list.prodName}</a>
 					</c:if>
 					<c:if test="${param.menu eq 'manage' }">
-					<a href="${updateProductView}">${list.prodName}</a>
+					<a href="/product${updateProductView}">${list.prodName}</a>
 					</c:if>
 					
-					
+			
 					</td>
 					<td></td>
 					<td align="left">${list.price}</td>

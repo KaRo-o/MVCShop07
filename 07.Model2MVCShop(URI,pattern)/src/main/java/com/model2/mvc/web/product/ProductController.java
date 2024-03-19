@@ -22,6 +22,7 @@ import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.product.ProductService;
 
 @Controller
+@RequestMapping("/product/*")
 public class ProductController {
 
 	@Autowired
@@ -109,6 +110,9 @@ public class ProductController {
 		}
 		search.setPageSize(pageSize);
 		
+		search.setSearchCondition(request.getParameter("searchCondition"));
+		search.setSearchKeyword(request.getParameter("searchKeyword"));
+		
 		Map<String, Object> map = productService.getProductList(search);
 		
 		Page resultPage = new Page(search.getCurrentPage(), 
@@ -147,7 +151,7 @@ public class ProductController {
 		
 		productService.updateProduct(product);
 		
-		return "redirect:/getProduct.do?prodNo="+product.getProdNo();
+		return "redirect:/product/getProduct?prodNo="+product.getProdNo();
 	}
 	
 	
