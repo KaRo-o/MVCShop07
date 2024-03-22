@@ -57,17 +57,7 @@ function fncGetUserList(currentPage){
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td width="93%" class="ct_ttl01">
-								<%-- <%
-								if (request.getParameter("menu").equals("search")) {
-								%>
-
-								<%
-								} else if (request.getParameter("menu").equals("manage")) {
-								%>
-											상품 관리
-								<%
-								}
-								%> --%>
+								
 								<c:if test="${param.menu == 'search' }">
 											상품 목록조회								
 								</c:if>
@@ -103,7 +93,7 @@ function fncGetUserList(currentPage){
 									src="/images/ct_btnbg01.gif" width="17" height="23"></td>
 								<td background="/images/ct_btnbg02.gif" class="ct_btn01"
 									style="padding-top: 3px;"><a
-									href="javascript:fncGetUserList(1);">검색</a></td>
+									href="javascript:fncGetProductList(1);">검색</a></td>
 								<td width="14" height="23"><img
 									src="/images/ct_btnbg03.gif" width="14" height="23"></td>
 							</tr>
@@ -134,10 +124,6 @@ function fncGetUserList(currentPage){
 					<td colspan="11" bgcolor="808285" height="1"></td>
 				</tr>
 
-				<%-- <%
-						for(int i=0; i<list.size(); i++) {
-						Product vo = list.get(i);
-				%> --%>
 				<tr>
 				<c:set var="i" value="0"></c:set>
 				<c:forEach var="list" items="${list}">
@@ -148,24 +134,24 @@ function fncGetUserList(currentPage){
 					<td align="left">
 					
 					
-					<c:url var="getProduct" value="/getProduct" >
+					<c:url var="getProduct" value="/product/getProduct" >
 						<c:param name="prodNo" value="${list.prodNo}"/>
-						<c:param name="menu" value="${param.menu}"/>
+						<c:param name="name" value="${param.menu}"/>
 					</c:url>
-					<c:url var="updateProductView" value="/updateProduct">
+					<c:url var="updateProductView" value="/product/updateProductView">
 						<c:param name="prodNo" value="${list.prodNo}"/>
-						<c:param name="menu" value="${param.menu}"/>
+						<c:param name="name" value="${param.menu}"/>
 					</c:url>
 					
 					
 					<c:if test="${param.menu eq 'search' }">
-					<a href="/product${getProduct}">${list.prodName}</a>
+					<a href="${getProduct}">${list.prodName}</a>
 					</c:if>
 					<c:if test="${param.menu eq 'manage' }">
-					<a href="/product${updateProductView}">${list.prodName}</a>
+					<a href="${updateProductView}">${list.prodName}</a>
 					</c:if>
 					
-			
+					
 					</td>
 					<td></td>
 					<td align="left">${list.price}</td>
@@ -174,11 +160,11 @@ function fncGetUserList(currentPage){
 					<td></td>
 					<td>
 					<c:choose>
-						<c:when test='${list.proTranCode.equals("1")}'>판매중</c:when>
+						<c:when test='${list.proTranCode.trim().equals("1") || list.proTranCode == null}'>판매중</c:when>
 						<c:when test='${list.proTranCode.trim().equals("2")}'>
-							구매완료
+							판매완료
 							<c:if test='${param.menu.equals("manage") }'>
-								<a href="/updateTranCodeByProd.do?prodNo=${list.prodNo}&tranCode=${list.proTranCode}">
+								<a href="/purchase/updateTranCodeByProd?tranNo=${list.proTranNo}&tranCode=3">
 								(배송시작)
 								</a>
 							</c:if>
@@ -188,29 +174,11 @@ function fncGetUserList(currentPage){
 					</c:choose>
 					</td>
 				
-					<%-- <td align="center"><%=i + 1 %></td>
-					<td></td>
-
-					<td align="left">
-					<%if (request.getParameter("menu").equals("search")) { %>
-					<a 	href="/getProduct.do?prodNo=<%=vo.getProdNo() %>&menu=<%=request.getParameter("menu")%>"><%=vo.getProdName() %></a>
-								<%} else if (request.getParameter("menu").equals("manage")) {%>
-					<a 	href="/updateProductView.do?prodNo=<%=vo.getProdNo() %>&menu=<%=request.getParameter("menu")%>"><%=vo.getProdName() %></a></td>
-								<% } %>
-					
-
-					<td></td>
-					<td align="left"><%=vo.getPrice() %></td>
-					<td></td>
-					<td align="left"><%=vo.getRegDate() %></td>
-					<td></td>
-					<td align="left">판매중</td> --%>
 				</tr>
 				<tr>
 					<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 				</tr>
 			</c:forEach>
-		
 
 			</table>
 
@@ -219,25 +187,6 @@ function fncGetUserList(currentPage){
 				<tr>
 					<td align="center">
 						<input type="hidden" id="currentPage" name="currentPage" value=""/>
-						
-						<%-- <c:if test="${ resultPage.currentPage <= resultPage.pageUnit }">
-								◀ 이전
-						</c:if>
-						<c:if test="${ resultPage.currentPage > resultPage.pageUnit }">
-								<a href="javascript:fncGetUserList('${ resultPage.currentPage-1}')">◀ 이전</a>
-						</c:if>
-						
-						<c:forEach var="i"  begin="${resultPage.beginUnitPage}" end="${resultPage.endUnitPage}" step="1">
-							<a href="javascript:fncGetUserList('${ i }');">${ i }</a>
-						</c:forEach>
-						
-						<c:if test="${ resultPage.endUnitPage >= resultPage.maxPage }">
-								이후 ▶
-						</c:if>
-						<c:if test="${ resultPage.endUnitPage < resultPage.maxPage }">
-								<a href="javascript:fncGetUserList('${resultPage.endUnitPage+1}')">이후 ▶</a>
-						</c:if> --%>
-						
 						<jsp:include page="../common/pageNavigator.jsp"/>	
 						
 					</td>

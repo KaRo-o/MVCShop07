@@ -55,7 +55,7 @@ function fncAddProduct(){
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post" action="/product/updateProduct">
+<form name="detailForm" method="post" >
 
 <input type="hidden" name="prodNo" value="${product.prodNo}"/>
 

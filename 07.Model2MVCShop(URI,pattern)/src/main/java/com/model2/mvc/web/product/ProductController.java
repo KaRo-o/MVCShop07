@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,7 @@ public class ProductController {
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
 	
+	
 	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
 	
@@ -40,10 +42,9 @@ public class ProductController {
 		System.out.println(this.getClass());
 	}
 	
-//	@RequestMapping("/addProduct.do")
-//	public String addProduct( @ModelAttribute("product") Product product) throws Exception {
-	@RequestMapping(value="addProduct", method=RequestMethod.POST)
-	public String addProduct(@ModelAttribute("product") Product product) throws Exception {
+	@RequestMapping(value="/addProduct", method=RequestMethod.POST)
+	public String addProduct( @ModelAttribute("product") Product product) throws Exception {
+		
 		if(product.getManuDate().contains("-")) {
 			String[] md = product.getManuDate().split("-");
 			product.setManuDate(md[0]+md[1]+md[2]);
@@ -54,8 +55,7 @@ public class ProductController {
 		return "forward:/product/addProductResultView.jsp";
 	}
 	
-//	@RequestMapping("/getProduct.do")
-	@RequestMapping(value="getProduct", method=RequestMethod.GET)
+	@RequestMapping(value = "/getProduct" ,method=RequestMethod.GET )
 	public String getProduct( @RequestParam("prodNo") int prodNo, Model model
 										, HttpServletRequest request
 										, HttpServletResponse response) 
@@ -80,18 +80,19 @@ public class ProductController {
 		
 		System.out.println(strProdNo.toString());
 		
-//		if(history == null) {
-//			Cookie cookie = new Cookie("history", strProdNo);
-//			cookie.setMaxAge(60*5);
-//			response.addCookie(cookie);
-//		} else {
+		if(history == null) {
+			Cookie cookie = new Cookie("history", strProdNo);
+			cookie.setMaxAge(60*5);
+			response.addCookie(cookie);
+		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append(strProdNo).append('_').append(history);
 			history = sb.toString();
 			Cookie cookie = new Cookie("history", history);
 			cookie.setMaxAge(60*5);
+			cookie.setPath("/");
 			response.addCookie(cookie);
-		//}
+		}
 		
 		
 		
@@ -100,24 +101,18 @@ public class ProductController {
 		
 	}
 	
-//	@RequestMapping("/listProduct.do")
-	@RequestMapping(value="listProduct")
-	public String listProduct( @ModelAttribute("search") Search search, Model model
-										,HttpServletRequest request) throws Exception {
+	@RequestMapping(value="/listProduct")
+	public String listProduct( @ModelAttribute("search") Search search, Model model) throws Exception {
 		
 		if(search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
 		search.setPageSize(pageSize);
 		
-		search.setSearchCondition(request.getParameter("searchCondition"));
-		search.setSearchKeyword(request.getParameter("searchKeyword"));
-		
 		Map<String, Object> map = productService.getProductList(search);
 		
 		Page resultPage = new Page(search.getCurrentPage(), 
 								((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		
 		
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("resultPage",resultPage);
@@ -127,8 +122,7 @@ public class ProductController {
 		return "forward:/product/listProduct.jsp";
 	}
 	
-//	@RequestMapping("/updateProductView.do")
-	@RequestMapping(value="updateProduct", method=RequestMethod.GET)
+	@RequestMapping(value="/updateProductView", method=RequestMethod.GET)
 	public String updateProductView( @RequestParam("prodNo") int prodNo, Model model) 
 											throws Exception {
 		
@@ -139,8 +133,7 @@ public class ProductController {
 		return "forward:/product/updateProductView.jsp";
 	}
 	
-//	@RequestMapping("/updateProduct.do")
-	@RequestMapping(value="updateProduct", method=RequestMethod.POST)
+	@RequestMapping(value="/updateProduct", method=RequestMethod.POST)
 	public String updateProduct( @ModelAttribute("product") Product product, 
 									Model model) throws Exception {
 		

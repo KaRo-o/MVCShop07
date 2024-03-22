@@ -46,13 +46,12 @@ function fncAddProduct(){
 function resetData(){
 	document.detailForm.reset();
 }
-
 </script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post" action="/product/addProduct">
+<form name="detailForm" method="post" >
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
